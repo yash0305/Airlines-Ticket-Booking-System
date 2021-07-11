@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+
+    <form action="{% url 'checkout' %}" method="post" name="confirm_payment">
+    {% csrf_token %}
+        {{response.RESPCODE}}
+
+        <h1>response: {{response}}</h1>
+    </form>
+    <div class="col my-4">
+
+        <h2>Payment status regarding your  {{response.ORDERID}}</h2>
+        {% if response.RESPCODE == '01' %}
+        ORDER SUCCESS
+        {% else %}
+        ORDER FAILURE
+        {% endif%}
+
+    </div>
+
+</div>
+
+<script>
+    document.paymentstatus.submit()
+</script>
+
+{% endblock %}

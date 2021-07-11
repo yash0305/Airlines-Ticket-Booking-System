@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+
+
+
+{% block content %}
+{% load cart %}
+{% load custom_filter %}
+<div class="container">
+   <div class="border rounded p-4 m-4 shadow">
+        <p class="display-4 pl-4 ml-4">Cart</p>
+        <hr>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Sno.</th>
+                    <th>booking id</th>
+                    <th>Flights</th>
+                    <th>From</th>
+                    <th>To</th>
+                    <th>Price</th>
+                    <th>No. of Ticket</th>
+                    <th>Total</th>
+                </tr>
+            </thead>
+            <tbody>
+
+                {% for flight in flights %}
+                <tr>
+                    <td>{{forloop.counter}}</td>
+                    <td>{{flight.id}}</td>
+                    <td>{{flight.AirlineName}}</td>
+                    <td>{{ flight.FromLocation }}</td>
+                    <td>{{ flight.ToLocation }}</td>
+                    <td>{{flight.Price|currency}}</td>
+                    <td>{{flight|cart_quantity:request.session.cart}}</td>
+                    <td>{{flight|price_total:request.session.cart|currency}}</td>
+                </tr>
+
+                {% endfor %}
+
+            </tbody>
+
+            <tfoot>
+                <tr>
+                    <th colspan="4"></th>
+                    <th class="" colspan="">Total</th>
+                    <th>{{flights|total_cart_price:request.session.cart|currency}}</th>
+                </tr>
+            </tfoot>
+        </table>
+        <hr>
+          <div class="m-3 p-3">
+              <form action="checkout" method="post">
+                  {% csrf_token %}
+            <button  data-toggle="modal" data-target="#exampleModal" class="btn btn-outline-info border rounded  col-lg-3 float-right">Check out</button>
+              </form>
+        </div>
+   </div>
+</div>
+
+
+
+
+{% endblock %}

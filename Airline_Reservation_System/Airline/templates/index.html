@@ -1,0 +1,100 @@
+
+{% extends 'base.html' %}
+    {% block content %}
+    {% load cart %}
+{% load widget_tweaks %}
+
+<div class="container mt-4 ">
+<div class="border rounded p-10  mr-5 shadow p-3 mb-5 bg-white rounded">
+        <form method="get" class="mt-4 ml-3">
+
+
+{#            {{ myFilter.form}}#}
+
+            {%  render_field myFilter.form.FromLocation class="btn btn-lg btn-light dropdown-toggle dr " %}
+
+           To {%  render_field myFilter.form.ToLocation class="btn btn-lg btn-light dropdown-toggle dr " %}
+           Date {%  render_field myFilter.form.DepartureTime class+='dr border border-dark' autocomplete="off" %}
+
+
+            <button type="submit" class="btn btn-light " id="search" >Search Flights</button>
+        </form>
+</div>
+<hr>
+
+</div>
+
+ <div class="border rounded shadow p-10 m-4  ">
+        <table class="table ">
+
+
+
+        <thead>
+            <tr>
+            <th scope="col">Airline Name</th>
+            <th scope="col">From</th>
+            <th scope="col">To</th>
+            <th scope="col">Departure Time</th>
+            <th scope="col">Price</th>
+            <th scope="col">Duration</th>
+            <th scope="col"></th>
+            </tr>
+        </thead>
+
+
+            {% for flight in flights %}
+            
+        <tr>
+            <td>{{ flight.AirlineName }}</td>
+            <td>{{ flight.FromLocation }}</td>
+            <td>{{ flight.ToLocation }}</td>
+            <td>{{ flight.DepartureTime }}</td>
+          
+            <td>{{ flight.Price }}</td>
+            <td>{{ flight.Duration }}</td>
+{#            <div class="text-center col">{{flight|cart_quantity:request.session.cart}} in Cart</div>#}
+                            {%if flight|is_in_cart:request.session.cart%}
+
+                            <div class="row no-gutters">
+							<form action="/#{{flight.id}}" class="col-2 " method="post">
+								{% csrf_token %}
+								<input hidden type="text" name='flight'  value='{{flight.id}}'>
+								<input hidden type="text" name='remove' value='True'>
+								<td><input type="submit"  value=" - " class="btn btn-block btn-light border-right"></td>
+							</form>
+							<td><div class="text-center col">No. of Passenger {{flight|cart_quantity:request.session.cart}}</div></td>
+							<form action="/#{{flight.id}}" class="col-2 " method="post">
+								{% csrf_token %}
+								<input hidden type="text" name='flight' value='{{flight.id}}'>
+								<td><input type="submit" value=" + " class="btn btn-block btn-light border-left"></td>
+							</form>
+						</div>
+                        {% else %}
+
+                            <form action="/#{{flight.id}}" class="col-2 " method="post">
+								{% csrf_token %}
+								<td><input hidden type="text" name='flight' value='{{flight.id}}'></td>
+								<td><input type="submit"  class="float-right btn-info  form-control"
+								value="book now"></td>
+							</form>
+                        {% endif %}
+
+
+        </tr>
+
+ 
+            {% endfor %}
+
+
+
+
+
+        </table>
+ </div>
+
+
+
+
+
+{% endblock %}
+
