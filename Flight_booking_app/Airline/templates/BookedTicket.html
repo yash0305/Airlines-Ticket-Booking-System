@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+{% load cart %}
+{% load custom_filter %}
+<div class="container">
+   <div class="border rounded p-4 m-4 shadow">
+        <p class="display-4 pl-4 ml-4">Tickets</p>
+        <hr>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Sno.</th>
+                    <th>Flights</th>
+                    <th>From</th>
+                    <th>To</th>
+                    <th>DepartureTime</th>
+                    <th>Price</th>
+                    <th>No. of Ticket</th>
+                    <th>Total</th>
+                </tr>
+            </thead>
+            <tbody>
+
+                {% for Booking in Bookings %}
+                <tr>
+                    <td>{{forloop.counter}}</td>
+                    <td>{{Booking.flight.AirlineName}}</td>
+                    <td>{{Booking.flight.FromLocation}}</td>
+                    <td>{{Booking.flight.ToLocation}}</td>
+                    <td>{{Booking.flight.DepartureTime}}</td>
+                    <td>{{Booking.Price|currency}}</td>
+                    <td>{{ Booking.NumberOfTraveller }}</td>
+                    <td>{{ Booking.NumberOfTraveller|multiply:Booking.Price|currency }}</td>
+
+{#                    <td>{{Booking.Price|currency}}</td>#}
+{##}
+{#                    <td>{{Booking.NumberOfTraveller|multiply:Booking.Price|currency}}</td>#}
+
+
+                </tr>
+
+                {% endfor %}
+
+            </tbody>
+
+        </table>
+
+   </div>
+</div>
+
+
+
+
+
+{% endblock %}
