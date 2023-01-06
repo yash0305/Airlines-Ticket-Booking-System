@@ -1,6 +1,6 @@
 
 from django.urls import path, include
-from .views import Index,store
+from .views import Index,landingPage
 from .views import Signup
 from .views import Login , logout
 from .views import Cart
@@ -14,7 +14,7 @@ from . import views
 
 urlpatterns = [
     path('', Index.as_view(), name='homepage'),
-    path('store', store , name='store'),
+    path('landingPage', landingPage , name='landingPage'),
     path('signup', Signup.as_view(), name='signup'),
     path('login', Login.as_view(), name='login'),
     path('logout', logout, name='logout'),
